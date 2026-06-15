@@ -150,7 +150,7 @@ Main infrastructure servers:
 - FSMO role management
 - Client-side verification and troubleshooting
 
-## Suggested Repository Structure
+## Repository Structure
 
 ```text
 .
