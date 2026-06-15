@@ -8,69 +8,43 @@ June 13, 2026
 
 # **Table of Contents**
 
-[Project Requirements [2](#project-requirements)](#project-requirements)
+## Table of Contents
 
-[IP Addressing Table [4](#ip-addressing-table)](#ip-addressing-table)
+* [Project Requirements](#project-requirements)
+* [IP Addressing Table](#ip-addressing-table)
+* [Resources Table](#resources-table)
+* [Users, Computers, IPs, and Groups Table](#users-computers-ips-and-groups-table)
+* [Creating Domain Environment](#creating-domain-environment)
+* [Creating a Second Server](#creating-a-second-server)
+* [Configuring DNS](#configuring-dns)
+* [ADDS – Users and Computers](#adds-users-and-computers)
+* [Group Policy Management](#group-policy-management)
 
-[Resources Table [4](#resources-table)](#resources-table)
+  * [Password and Lockout Policies](#password-and-lockout-policies)
+  * [Enabling RDP for Remote Desktop Connection](#enabling-rdp-for-remote-desktop-connection)
+  * [Enabling Remote Assistance](#enabling-remote-assistance)
+  * [Prohibiting Access to Removable Storage, Task Manager, and Control Panel](#prohibiting-access-to-removable-storage-task-manager-and-control-panel)
+* [Configuring DHCP](#configuring-dhcp)
 
-[Users, Computers, IPs, and Groups Table [4](#users-computers-ips-and-groups-table)](#users-computers-ips-and-groups-table)
+  * [DHCP Scope](#dhcp-scope)
+  * [DHCP Failover](#dhcp-failover)
+* [Web Server Internet Information Services IIS](#web-server-internet-information-services-iis)
+* [Sharing and File Server Resource Manager FSRM](#sharing-and-file-server-resource-manager-fsrm)
+* [Map Network Drive](#map-network-drive)
+* [Public Shared Folder and Quota](#public-shared-folder-and-quota)
+* [Printer Configuration](#printer-configuration)
+* [Active Directory Administrative Center - Active Directory Recycle Bin](#active-directory-administrative-center---active-directory-recycle-bin)
+* [Virtualization with Hyper-V](#virtualization-with-hyper-v)
 
-[Creating Domain Environment [5](#creating-domain-environment)](#creating-domain-environment)
-
-[Creating a Second Server [7](#creating-a-second-server)](#creating-a-second-server)
-
-[Configuring DNS [10](#configuring-dns)](#configuring-dns)
-
-[ADDS – Users and Computers [11](#adds-users-and-computers)](#adds-users-and-computers)
-
-[Group Policy Management [13](#group-policy-management)](#group-policy-management)
-
-[Password and Lockout Policies [13](#password-and-lockout-policies)](#password-and-lockout-policies)
-
-[Enabling RDP for Remote Desktop Connection [14](#enabling-rdp-for-remote-desktop-connection)](#enabling-rdp-for-remote-desktop-connection)
-
-[Enabling Remote Assistance [15](#enabling-remote-assistance)](#enabling-remote-assistance)
-
-[Prohibiting access to Removable Storage, Task Manager and Control Panel [16](#prohibiting-access-to-removable-storage-task-manager-and-control-panel)](#prohibiting-access-to-removable-storage-task-manager-and-control-panel)
-
-[Configuring DHCP [17](#configuring-dhcp)](#configuring-dhcp)
-
-[DHCP Scope [17](#dhcp-scope)](#dhcp-scope)
-
-[DHCP Failover [18](#dhcp-failover)](#dhcp-failover)
-
-[Web Server Internet Information Services (IIS) [19](#web-server-internet-information-services-iis)](#web-server-internet-information-services-iis)
-
-[Sharing and File Server Resource Manager (FSRM) [20](#sharing-and-file-server-resource-manager-fsrm)](#sharing-and-file-server-resource-manager-fsrm)
-
-[Map Network Drive [21](#map-network-drive)](#map-network-drive)
-
-[Public Shared Folder and Quota [22](#public-shared-folder-and-quota)](#public-shared-folder-and-quota)
-
-[Printer Configuration [23](#printer-configuration)](#printer-configuration)
-
-[Active Directory Administrative Center - Active Directory Recycle Bin [24](#active-directory-administrative-center---active-directory-recycle-bin)](#active-directory-administrative-center---active-directory-recycle-bin)
-
-[Virtualization with Hyper-V [25](#virtualization-with-hyper-v)](#virtualization-with-hyper-v)
-
-[Installing Hyper-V [25](#installing-hyper-v)](#installing-hyper-v)
-
-[Creating Windows Server VM in Hyper-V [26](#creating-windows-server-vm-in-hyper-v)](#creating-windows-server-vm-in-hyper-v)
-
-[Configuring Hyper-V Replica [27](#configuring-hyper-v-replica)](#configuring-hyper-v-replica)
-
-[Windows Server Backup [28](#windows-server-backup)](#windows-server-backup)
-
-[Windows Deployment Services [29](#windows-deployment-services)](#windows-deployment-services)
-
-[Windows Server Update Services [31](#windows-server-update-services)](#windows-server-update-services)
-
-[Transfer and Seize FSMO Master Roles (Explain) [32](#transfer-and-seize-fsmo-master-roles-explain)](#transfer-and-seize-fsmo-master-roles-explain)
-
-[Verifying (Clients View) [33](#verifying-clients-view)](#verifying-clients-view)
-
-[MESSAGE FOR YOU! [38](#message-for-you)](#message-for-you)
+  * [Installing Hyper-V](#installing-hyper-v)
+  * [Creating Windows Server VM in Hyper-V](#creating-windows-server-vm-in-hyper-v)
+  * [Configuring Hyper-V Replica](#configuring-hyper-v-replica)
+* [Windows Server Backup](#windows-server-backup)
+* [Windows Deployment Services](#windows-deployment-services)
+* [Windows Server Update Services](#windows-server-update-services)
+* [Transfer and Seize FSMO Master Roles](#transfer-and-seize-fsmo-master-roles-explain)
+* [Verifying Clients View](#verifying-clients-view)
+* [Message for You](#message-for-you)
 
 # **Project Requirements**
 
