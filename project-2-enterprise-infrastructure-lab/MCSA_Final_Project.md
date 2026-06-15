@@ -328,7 +328,7 @@ Adding Forwarders (Google and Cloudflare), Right-click on PDC 🡪 Properties �
 # **ADDS – Users and Computers**
 
 We can use AI to make a script to add ADDS Objects faster. I used this script for this process:
-
+```
 **Import**-**Module** **ActiveDirectory**
 
  
@@ -510,7 +510,7 @@ else {
  
 
 **Write**-**Host** "Done. Correct OU structure, users, groups, memberships, and computers were created." -**ForegroundColor** **Green**
-
+```
  
 
 Verify:
