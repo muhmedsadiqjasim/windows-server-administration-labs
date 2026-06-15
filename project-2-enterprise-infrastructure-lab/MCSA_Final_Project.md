@@ -1143,64 +1143,42 @@ netdom query fsmo
 **Transfer FSMO Roles**
 
 A **transfer** is used when the current FSMO role holder is online and working. Open CMD as Administrator and run:
-
-**ntdsutil**
-
-**roles**
-
-**connections**
-
-**connect to server ADC-CORE**
-
-**quit**
-
-**transfer schema master**
-
-**transfer naming master**
-
-**transfer rid master**
-
-**transfer pdc**
-
-**transfer infrastructure master**
-
-**quit**
-
-**quit**
-
+```PowerShell
+ntdsutil
+roles
+connections
+connect to server ADC-CORE
+quit
+transfer schema master
+transfer naming master
+transfer rid master
+transfer pdc
+transfer infrastructure master
+quit
+quit
+```
 Replace DC2 with the Domain Controller that will receive the FSMO roles.
 
 **Seize FSMO Roles**
 
 A **seize** is used only when the old FSMO role holder has failed and cannot be recovered. Run:
-
-**ntdsutil**
-
-**roles**
-
-**connections**
-
-**connect to server ADC-CORE**
-
-**quit**
-
-**seize schema master**
-
-**seize naming master**
-
-**seize rid master**
-
-**seize pdc**
-
-**seize infrastructure master**
-
-**quit**
-
-**quit**
-
+```PowerShell
+ntdsutil
+roles
+connections
+connect to server ADC-CORE
+quit
+seize schema master
+seize naming master
+seize rid master
+seize pdc
+seize infrastructure master
+quit
+quit
+```
 After transferring or seizing, verify the FSMO roles again:
 
-**netdom query fsmo**
+`netdom query fsmo`
 
 **Note:** Transfer FSMO roles when the old server is available. Seize FSMO roles only in emergency situations. After seizing, the failed old Domain Controller should not be brought back online without proper cleanup.
 
