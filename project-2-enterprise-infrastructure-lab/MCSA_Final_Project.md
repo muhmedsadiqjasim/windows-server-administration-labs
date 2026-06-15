@@ -328,190 +328,100 @@ Adding Forwarders (Google and Cloudflare), Right-click on PDC 🡪 Properties �
 # **ADDS – Users and Computers**
 
 We can use AI to make a script to add ADDS Objects faster. I used this script for this process:
-```
-**Import**-**Module** **ActiveDirectory**
 
- 
-
-\$DomainDN = (**Get**-**ADDomain**).**DistinguishedName**
-
-\$GroupsOU = "OU=Groups,\$DomainDN"
-
-\$DefaultPassword = **ConvertTo**-**SecureString** "P@ssw0rd123!" -**AsPlainText** -**Force**
-
- 
-
-\$Departments = @(
-
-@{ **Name** = "HR"; **Group** = "HR-Group" },
-
-@{ **Name** = "Sales"; **Group** = "Sales-Group" },
-
-@{ **Name** = "Dev"; **Group** = "Dev-Group" },
-
-@{ **Name** = "IT"; **Group** = "IT-Group" },
-
-@{ **Name** = "Finance"; **Group** = "Fin-Group" }
-
+```PowerShell
+Import-Module ActiveDirectory
+ 
+$DomainDN = (Get-ADDomain).DistinguishedName
+$GroupsOU = "OU=Groups,$DomainDN"
+$DefaultPassword = ConvertTo-SecureString "P@ssw0rd123!" -AsPlainText -Force
+ 
+$Departments = @(
+    @{ Name = "HR"; Group = "HR-Group" },
+    @{ Name = "Sales"; Group = "Sales-Group" },
+    @{ Name = "Dev"; Group = "Dev-Group" },
+    @{ Name = "IT"; Group = "IT-Group" },
+    @{ Name = "Finance"; Group = "Fin-Group" }
 )
-
- 
-
-\$Users = @(
-
-@{ **Department**="HR"; **FirstName**="Ali"; **LastName**="Hassan"; **Username**="ali.hassan"; **Computer**="PC-01"; **Group**="HR-Group" },
-
-@{ **Department**="HR"; **FirstName**="Sara"; **LastName**="Ahmed"; **Username**="sara.ahmed"; **Computer**="PC-02"; **Group**="HR-Group" },
-
-@{ **Department**="Sales"; **FirstName**="Omar"; **LastName**="Khalid"; **Username**="omar.khalid"; **Computer**="PC-03"; **Group**="Sales-Group" },
-
-@{ **Department**="Sales"; **FirstName**="Noor"; **LastName**="Salim"; **Username**="noor.salim"; **Computer**="PC-04"; **Group**="Sales-Group" },
-
-@{ **Department**="Dev"; **FirstName**="Mustafa"; **LastName**="Karim"; **Username**="mustafa.karim"; **Computer**="PC-05"; **Group**="Dev-Group" },
-
-@{ **Department**="Dev"; **FirstName**="Zainab"; **LastName**="Ali"; **Username**="zainab.ali"; **Computer**="PC-06"; **Group**="Dev-Group" },
-
-@{ **Department**="IT"; **FirstName**="Muhmedsadiq"; **LastName**=""; **Username**="muhmedsadiq"; **Computer**="PC-07"; **Group**="IT-Group" },
-
-@{ **Department**="IT"; **FirstName**="Lina"; **LastName**="Nabil"; **Username**="lina.nabil"; **Computer**="PC-08"; **Group**="IT-Group" },
-
-@{ **Department**="Finance"; **FirstName**="Ahmed"; **LastName**="Yasin"; **Username**="ahmed.yasin"; **Computer**="PC-09"; **Group**="Fin-Group" },
-
-@{ **Department**="Finance"; **FirstName**="Huda"; **LastName**="Sami"; **Username**="huda.sami"; **Computer**="PC-10"; **Group**="Fin-Group" }
-
+ 
+$Users = @(
+    @{ Department="HR"; FirstName="Ali"; LastName="Hassan"; Username="ali.hassan"; Computer="PC-01"; Group="HR-Group" },
+    @{ Department="HR"; FirstName="Sara"; LastName="Ahmed"; Username="sara.ahmed"; Computer="PC-02"; Group="HR-Group" },
+    @{ Department="Sales"; FirstName="Omar"; LastName="Khalid"; Username="omar.khalid"; Computer="PC-03"; Group="Sales-Group" },
+    @{ Department="Sales"; FirstName="Noor"; LastName="Salim"; Username="noor.salim"; Computer="PC-04"; Group="Sales-Group" },
+    @{ Department="Dev"; FirstName="Mustafa"; LastName="Karim"; Username="mustafa.karim"; Computer="PC-05"; Group="Dev-Group" },
+    @{ Department="Dev"; FirstName="Zainab"; LastName="Ali"; Username="zainab.ali"; Computer="PC-06"; Group="Dev-Group" },
+    @{ Department="IT"; FirstName="Muhmedsadiq"; LastName=""; Username="muhmedsadiq"; Computer="PC-07"; Group="IT-Group" },
+    @{ Department="IT"; FirstName="Lina"; LastName="Nabil"; Username="lina.nabil"; Computer="PC-08"; Group="IT-Group" },
+    @{ Department="Finance"; FirstName="Ahmed"; LastName="Yasin"; Username="ahmed.yasin"; Computer="PC-09"; Group="Fin-Group" },
+    @{ Department="Finance"; FirstName="Huda"; LastName="Sami"; Username="huda.sami"; Computer="PC-10"; Group="Fin-Group" }
 )
-
- 
-
-if (-not (**Get**-**ADOrganizationalUnit** -**LDAPFilter** "(ou=Groups)" -**SearchBase** \$DomainDN -**SearchScope** **OneLevel** -**ErrorAction** **SilentlyContinue**)) {
-
-**New**-**ADOrganizationalUnit** -**Name** "Groups" -**Path** \$DomainDN -**ProtectedFromAccidentalDeletion** \$false
-
+ 
+if (-not (Get-ADOrganizationalUnit -LDAPFilter "(ou=Groups)" -SearchBase $DomainDN -SearchScope OneLevel -ErrorAction SilentlyContinue)) {
+    New-ADOrganizationalUnit -Name "Groups" -Path $DomainDN -ProtectedFromAccidentalDeletion $false
 }
-
- 
-
-foreach (\$Dept in \$Departments) {
-
-\$DeptOU = "OU=\$(\$Dept.Name),\$DomainDN"
-
-\$UsersOU = "OU=Users,\$DeptOU"
-
-\$ComputersOU = "OU=Computers,\$DeptOU"
-
- 
-
-if (-not (**Get**-**ADOrganizationalUnit** -**LDAPFilter** "(ou=\$(\$Dept.Name))" -**SearchBase** \$DomainDN -**SearchScope** **OneLevel** -**ErrorAction** **SilentlyContinue**)) {
-
-**New**-**ADOrganizationalUnit** -**Name** \$Dept.**Name** -**Path** \$DomainDN -**ProtectedFromAccidentalDeletion** \$false
-
+ 
+foreach ($Dept in $Departments) {
+    $DeptOU = "OU=$($Dept.Name),$DomainDN"
+    $UsersOU = "OU=Users,$DeptOU"
+    $ComputersOU = "OU=Computers,$DeptOU"
+ 
+    if (-not (Get-ADOrganizationalUnit -LDAPFilter "(ou=$($Dept.Name))" -SearchBase $DomainDN -SearchScope OneLevel -ErrorAction SilentlyContinue)) {
+        New-ADOrganizationalUnit -Name $Dept.Name -Path $DomainDN -ProtectedFromAccidentalDeletion $false
+    }
+ 
+    if (-not (Get-ADOrganizationalUnit -LDAPFilter "(ou=Users)" -SearchBase $DeptOU -SearchScope OneLevel -ErrorAction SilentlyContinue)) {
+        New-ADOrganizationalUnit -Name "Users" -Path $DeptOU -ProtectedFromAccidentalDeletion $false
+    }
+ 
+    if (-not (Get-ADOrganizationalUnit -LDAPFilter "(ou=Computers)" -SearchBase $DeptOU -SearchScope OneLevel -ErrorAction SilentlyContinue)) {
+        New-ADOrganizationalUnit -Name "Computers" -Path $DeptOU -ProtectedFromAccidentalDeletion $false
+    }
+ 
+    $ExistingGroup = Get-ADGroup -Identity $Dept.Group -ErrorAction SilentlyContinue
+ 
+    if ($ExistingGroup) {
+        Move-ADObject -Identity $ExistingGroup.DistinguishedName -TargetPath $GroupsOU -ErrorAction SilentlyContinue
+    }
+    else {
+        New-ADGroup -Name $Dept.Group -SamAccountName $Dept.Group -GroupScope Global -GroupCategory Security -Path $GroupsOU
+    }
 }
-
- 
-
-if (-not (**Get**-**ADOrganizationalUnit** -**LDAPFilter** "(ou=Users)" -**SearchBase** \$DeptOU -**SearchScope** **OneLevel** -**ErrorAction** **SilentlyContinue**)) {
-
-**New**-**ADOrganizationalUnit** -**Name** "Users" -**Path** \$DeptOU -**ProtectedFromAccidentalDeletion** \$false
-
+ 
+foreach ($User in $Users) {
+    $DeptOU = "OU=$($User.Department),$DomainDN"
+    $UsersOU = "OU=Users,$DeptOU"
+    $ComputersOU = "OU=Computers,$DeptOU"
+    $FullName = "$($User.FirstName) $($User.LastName)".Trim()
+ 
+    $ExistingUser = Get-ADUser -Filter "SamAccountName -eq '$($User.Username)'" -ErrorAction SilentlyContinue
+ 
+    if ($ExistingUser) {
+        Move-ADObject -Identity $ExistingUser.DistinguishedName -TargetPath $UsersOU -ErrorAction SilentlyContinue
+    }
+    else {
+        if ($User.LastName -eq "") {
+            New-ADUser -Name $FullName -GivenName $User.FirstName -SamAccountName $User.Username -UserPrincipalName "$($User.Username)@company.local" -Path $UsersOU -AccountPassword $DefaultPassword -Enabled $true -ChangePasswordAtLogon $false
+        }
+        else {
+            New-ADUser -Name $FullName -GivenName $User.FirstName -Surname $User.LastName -SamAccountName $User.Username -UserPrincipalName "$($User.Username)@company.local" -Path $UsersOU -AccountPassword $DefaultPassword -Enabled $true -ChangePasswordAtLogon $false
+        }
+    }
+ 
+    Add-ADGroupMember -Identity $User.Group -Members $User.Username -ErrorAction SilentlyContinue
+ 
+    $ExistingComputer = Get-ADComputer -Filter "Name -eq '$($User.Computer)'" -ErrorAction SilentlyContinue
+ 
+    if ($ExistingComputer) {
+        Move-ADObject -Identity $ExistingComputer.DistinguishedName -TargetPath $ComputersOU -ErrorAction SilentlyContinue
+    }
+    else {
+        New-ADComputer -Name $User.Computer -SamAccountName "$($User.Computer)$" -Path $ComputersOU -Enabled $true
+    }
 }
-
- 
-
-if (-not (**Get**-**ADOrganizationalUnit** -**LDAPFilter** "(ou=Computers)" -**SearchBase** \$DeptOU -**SearchScope** **OneLevel** -**ErrorAction** **SilentlyContinue**)) {
-
-**New**-**ADOrganizationalUnit** -**Name** "Computers" -**Path** \$DeptOU -**ProtectedFromAccidentalDeletion** \$false
-
-}
-
- 
-
-\$ExistingGroup = **Get**-**ADGroup** -**Identity** \$Dept.**Group** -**ErrorAction** **SilentlyContinue**
-
- 
-
-if (\$ExistingGroup) {
-
-**Move**-**ADObject** -**Identity** \$ExistingGroup.**DistinguishedName** -**TargetPath** \$GroupsOU -**ErrorAction** **SilentlyContinue**
-
-}
-
-else {
-
-**New**-**ADGroup** -**Name** \$Dept.**Group** -**SamAccountName** \$Dept.**Group** -**GroupScope** **Global** -**GroupCategory** **Security** -**Path** \$GroupsOU
-
-}
-
-}
-
- 
-
-foreach (\$User in \$Users) {
-
-\$DeptOU = "OU=\$(\$User.Department),\$DomainDN"
-
-\$UsersOU = "OU=Users,\$DeptOU"
-
-\$ComputersOU = "OU=Computers,\$DeptOU"
-
-\$FullName = "\$(\$User.FirstName) \$(\$User.LastName)".**Trim**()
-
- 
-
-\$ExistingUser = **Get**-**ADUser** -**Filter** "SamAccountName -eq '\$(\$User.Username)'" -**ErrorAction** **SilentlyContinue**
-
- 
-
-if (\$ExistingUser) {
-
-**Move**-**ADObject** -**Identity** \$ExistingUser.**DistinguishedName** -**TargetPath** \$UsersOU -**ErrorAction** **SilentlyContinue**
-
-}
-
-else {
-
-if (\$User.**LastName** -eq "") {
-
-**New**-**ADUser** -**Name** \$FullName -**GivenName** \$User.**FirstName** -**SamAccountName** \$User.**Username** -**UserPrincipalName** "\$(\$User.Username)@company.local" -**Path** \$UsersOU -**AccountPassword** \$DefaultPassword -**Enabled** \$true -**ChangePasswordAtLogon** \$false
-
-}
-
-else {
-
-**New**-**ADUser** -**Name** \$FullName -**GivenName** \$User.**FirstName** -**Surname** \$User.**LastName** -**SamAccountName** \$User.**Username** -**UserPrincipalName** "\$(\$User.Username)@company.local" -**Path** \$UsersOU -**AccountPassword** \$DefaultPassword -**Enabled** \$true -**ChangePasswordAtLogon** \$false
-
-}
-
-}
-
- 
-
-**Add**-**ADGroupMember** -**Identity** \$User.**Group** -**Members** \$User.**Username** -**ErrorAction** **SilentlyContinue**
-
- 
-
-\$ExistingComputer = **Get**-**ADComputer** -**Filter** "Name -eq '\$(\$User.Computer)'" -**ErrorAction** **SilentlyContinue**
-
- 
-
-if (\$ExistingComputer) {
-
-**Move**-**ADObject** -**Identity** \$ExistingComputer.**DistinguishedName** -**TargetPath** \$ComputersOU -**ErrorAction** **SilentlyContinue**
-
-}
-
-else {
-
-**New**-**ADComputer** -**Name** \$User.**Computer** -**SamAccountName** "\$(\$User.Computer)\$" -**Path** \$ComputersOU -**Enabled** \$true
-
-}
-
-}
-
- 
-
-**Write**-**Host** "Done. Correct OU structure, users, groups, memberships, and computers were created." -**ForegroundColor** **Green**
+ 
+Write-Host "Done. Correct OU structure, users, groups, memberships, and computers were created." -ForegroundColor Green
 ```
- 
 
 Verify:
 
