@@ -42,7 +42,7 @@ Operating System: Windows 11 Pro
 - Created department OUs for HR, Sales, and IT
 - Created users, computers, and department security groups
 - Applied a fixed desktop background for domain users
-- Hide Programs and Features from Control Panel for HR users
+- Hid Programs and Features from Control Panel for HR users
 - Removed Properties from This PC context menu
 - Disabled external storage for HR and Sales users
 - Excluded the HR Manager from the external storage restriction policy
